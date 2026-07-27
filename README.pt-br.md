@@ -9,7 +9,6 @@ GQEngine é uma engine para criação de jogos 2D focada em simplicidade, modula
 Internamente, a engine utiliza **LuaJIT** e **SDL2**, oferecendo uma API simples e consistente para o desenvolvimento de jogos 2D.
 
 ## Filosofia
----
 A GQEngine foi criada com alguns objetivos principais:
 
 - API simples e fácil de aprender;
@@ -19,7 +18,6 @@ A GQEngine foi criada com alguns objetivos principais:
 - Incentivar boas práticas de organização sem esconder o funcionamento da engine.
 
 ## Sistema de plugins
----
 Grande parte das funcionalidades da engine é fornecida através de plugins independentes. Eles podem ser habilitados apenas quando necessários, mantendo cada projeto enxuto e modular.
 
 Os plugins incluem:
@@ -38,13 +36,11 @@ Novos plugins poderão utilizar licenças diferentes da licença principal da en
 O sistema de plugins ainda está em desenvolvimento e sua API poderá sofrer alterações durante as primeiras versões.
 
 ## Plataformas
----
 A GQEngine é desenvolvida e testada oficialmente em Linux, ambiente principal do projeto.
 
 Como LuaJIT e SDL2 são multiplataformas, existe a expectativa de suporte para Windows e outras plataformas no futuro. No entanto, apenas Linux é considerado oficialmente suportado nesta fase inicial do desenvolvimento.
 
 ## Contribuindo
----
 O projeto ainda está em fase inicial de desenvolvimento e sua arquitetura está sendo definida.
 
 Sugestões, dúvidas e discussões são bem-vindas através das **Issues** e **Discussions** do repositório.
