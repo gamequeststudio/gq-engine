@@ -17,6 +17,34 @@ A GQEngine foi criada com alguns objetivos principais:
 - Pouca configuração para iniciar um projeto;
 - Incentivar boas práticas de organização sem esconder o funcionamento da engine.
 
+## 🚀 Exemplo Básico
+
+Abaixo está um exemplo mínimo de inicialização da engine com uma janela e desenho no canvas:
+
+```lua
+local gq = require("gqengine")
+local GraphicsPlugin = require("gqengine.internal.graphics.graphics_plugin")
+
+-- Habilita os plugins necessários
+gq.enablePlugin(GraphicsPlugin())
+
+-- Cria a janela e obtém o canvas ativo
+local window = gq.createWindow("GQEngine - Exemplo Básico", 800, 600)
+local canvas = window:getCanvas()
+
+-- Define a lógica de desenho no canvas
+function canvas:onRender(g)
+    g.setColor(255, 0, 0)           -- Vermelho
+    g.fillRect(100, 100, 200, 150)  -- Retângulo preenchido
+    
+    g.setColor(255, 255, 255)       -- Branco
+    g.lineRect(100, 100, 200, 150)  -- Contorno do retângulo
+end
+
+-- Inicia o loop principal da engine
+gq.run()
+```
+
 ## Sistema de plugins
 Grande parte das funcionalidades da engine é fornecida através de plugins independentes. Eles podem ser habilitados apenas quando necessários, mantendo cada projeto enxuto e modular.
 
