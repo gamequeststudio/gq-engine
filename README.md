@@ -17,7 +17,7 @@ GQEngine was created with the following goals:
 - Minimal setup to start a new project;
 - Encourage good project organization without hiding how the engine works.
 
-## 🚀 Basic Example
+## Basic Example
 
 Below is a minimal example of initializing the engine with a window and drawing onto the canvas:
 
