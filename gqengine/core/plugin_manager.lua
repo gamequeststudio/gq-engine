@@ -1,5 +1,5 @@
-local Plugin = require("gqengine.internal.core.plugin")
-local class = require("gqengine.internal.core.class")
+local Plugin = require("gqengine.core.plugin")
+local class = require("gqengine.core.class")
 
 --- Core manager resposible for resgistering, attaching, and notifying engine plugins.
 ---@class PluginManager : Class
@@ -14,6 +14,7 @@ local PluginManager = class()
 function PluginManager:init(owner)
     self.owner = owner
     self.allPlugins = {}
+    self.namedPlugins = {}
     self.updatePlugins = {}
     self.renderPlugins = {}
 end
@@ -39,14 +40,19 @@ function PluginManager:addPlugin(plugin)
         type(plugin) == "table" and plugin.is and plugin:is(Plugin), 
         "[GQEngine Error] 'enablePlugin' esperava um objeto do tipo Plugin"
     )
-    
+
     -- Attach the plugin to the internal engine context
     plugin:onAttach(self.owner)
 
     -- Register in master list and categorized sub-lists
     table.insert(self.allPlugins, plugin)
+    if plugin.name then self.namedPlugins[plugin.name] = plugin end
     if plugin.onUpdate then table.insert(self.updatePlugins, plugin) end
     if plugin.onRender then table.insert(self.renderPlugins, plugin) end
+end
+
+function PluginManager:getPluginByName(name)
+    return self.namedPlugins[name]
 end
 
 return PluginManager

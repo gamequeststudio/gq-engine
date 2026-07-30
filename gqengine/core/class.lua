@@ -1,11 +1,13 @@
 --- Factory function creating lightweight OOP class structures with single inheritance and type checking.
----@param base? table Optional base class table to inherit from.
+---@param base? Class|table Optional base class table to inherit from.
 ---@return Class class_table The constructed class object equipped with constructor instantiation and inheritance utilities.
 local function new_class(base)
     ---@class Class
+    ---@field super? Class|table Reference to the direct base class, if inherited.
     ---@field ancestors table<table, boolean> Lookup table of all inherited ancestor classes.
     local class_table = {}
     class_table.__index = class_table
+    class_table.super = base
 
     class_table.ancestors = {}
     class_table.ancestors[class_table] = true
@@ -15,21 +17,18 @@ local function new_class(base)
         for k, v in pairs(base.ancestors) do
             class_table.ancestors[k] = v
         end
-
         class_table.ancestors[base] = true
-        setmetatable(class_table, { __index = base })
     end
 
     --- Default constructor callback executed upon instance creation.
     --- Override this method in derived classes to perform initialization.
     ---@param ... any Arguments passed when instantiating the class.
     function class_table:init(...)
-
     end
 
     --- Creates a subclass extending from this class.
-    ---@param subclass? table Optional table to convert into a subclass.
-    ---@return table subclass The newly created subclass.
+    ---@param subclass? Class|table Optional pre-existing table to convert into a subclass.
+    ---@return Class subclass The newly created subclass.
     function class_table.extend(subclass)
         return new_class(subclass or class_table)
     end
@@ -42,10 +41,11 @@ local function new_class(base)
     end
 
     local mt = {
+        __index = base,
         --- Instantiates the class as an object and invokes its `init` constructor if defined.
-        ---@param self table
+        ---@param self Class
         ---@param ... any Arguments passed directly to the constructor method (`init`).
-        ---@return table instance The instantiated object with this class set as its metatable.
+        ---@return Class instance The instantiated object with this class set as its metatable.
         __call = function(self, ...)
             local instance = setmetatable({}, class_table)
             if instance.init then instance:init(...) end

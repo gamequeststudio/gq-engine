@@ -1,4 +1,4 @@
-local class = require("gqengine.internal.core.class")
+local class = require("gqengine.core.class")
 
 --- Drawing surface bound to a window, serving as the user canvas for render callbacks.
 ---@class Canvas : Class

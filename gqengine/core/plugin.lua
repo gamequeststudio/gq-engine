@@ -1,9 +1,13 @@
-local class = require("gqengine.internal.core.class")
+local class = require("gqengine.core.class")
 
 --- Base class and interface for all GQEngine plugins.
 --- Extend this and override lifecycle methods to inject custm funtionality.
 ---@class Plugin : Class
 local Plugin = class()
+
+function Plugin:init(name)
+    self.name = name
+end
 
 --- Lifecycle callback executed when the plugin is attached to the engine context.
 --- Override this method to perform initialization and acquire required core resources.

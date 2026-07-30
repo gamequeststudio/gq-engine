@@ -1,4 +1,4 @@
-local class = require("gqengine.internal.core.class")
+local class = require("gqengine.core.class")
 
 --- Public window facade exposed to the game developer.
 --- Wraps the internal `NativeWindow` instance to enforce encapsulation and prevent access to internal engine methods.
@@ -24,7 +24,8 @@ local publicWhiteList = {
     "getCanvas",
     "setCanvas",
     "getSize",
-    "setSize"
+    "setSize",
+    "setTitle"
 }
 
 -- Dynamically forwards whitelisted method calls to the underlying NativeWindow instance

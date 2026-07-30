@@ -1,11 +1,11 @@
 local SDL = require("SDL")
 
-local Canvas = require("gqengine.core.canvas")
-local class = require("gqengine.internal.core.class")
+local Canvas = require("gqengine.canvas")
+local class = require("gqengine.core.class")
 
 --- Low-level wrapper around the native SDL window object and its surface/canvas properties.
 ---@class NativeWindow : Class
----@field private sdlWindow any The native SDL window handle.
+---@field private sdlWindow any The native SDL window handle instance.
 ---@field private visible boolean The visibility status of the window.
 ---@field private canvas Canvas The active canvas instance attached to this window.
 local NativeWindow = class()
@@ -49,8 +49,10 @@ end
 
 --- Hides the window from screen and marks it as invisible.
 function NativeWindow:hide()
-    self.sdlWindow:hide()
-    self.visible = false
+    if self.sdlWindow then
+        self.sdlWindow:hide()
+        self.visible = false
+    end
 end
 
 --- Returns the raw native SDL window handle for low-level/internal access.
@@ -76,6 +78,14 @@ end
 ---@return integer height The window height in pixels.
 function NativeWindow:getSize() 
     return self.sdlWindow:getSize() 
+end
+
+--- Updates the window title displayed in the operating system title bar.
+---@param title string The new title string for the window.
+function NativeWindow:setTitle(title)
+    if self.sdlWindow then
+        self.sdlWindow:setTitle(title)
+    end
 end
 
 return NativeWindow

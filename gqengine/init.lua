@@ -1,24 +1,30 @@
 local SDL = require("SDL")
 
-local PluginManager = require("gqengine.internal.core.plugin_manager")
+local PluginManager = require("gqengine.core.plugin_manager")
+local FPSCounter = require("gqengine.core.fps_counter")
+local NativeWindow = require("gqengine.window.native_window")
+local PublicWindow = require("gqengine.window.window")
 
-local NativeWindow = require("gqengine.internal.window.native_window")
-local PublicWindow = require("gqengine.core.window")
-
-local Canvas = require("gqengine.core.canvas")
+local Canvas = require("gqengine.canvas")
 
 --- Internal core class managing application lifecycle, event polling, and main loop execution.
 ---@class CoreEngine
----@field private pluginManager PluginManager The internal plugin manager subsystem.
+---@field pluginManager PluginManager The internal plugin manager subsystem.
 ---@field private window? NativeWindow The active native window instance, if initialized.
 ---@field private running boolean Flags whether the application main loop is active.
+---@field publicAPI table The public API facade table returned when requiring the engine.
+---@field private lastTick integer Timestamp of the last frame tick in milliseconds.
+---@field private fpsCounter FPSCounter The utility responsible for measuring framerate performance.
 local CoreEngine = {}
 
---- Initializes internal engine subsystems and state variables.
+--- Initializes internal engine subsystems, state variables, and performance counters.
 ---@private
 function CoreEngine:internalInit()
     self.pluginManager = PluginManager(self)
     self.running = false
+    self.publicAPI = self:getPublicAPI()
+    self.lastTick = SDL.getTicks()
+    self.fpsCounter = FPSCounter()
 end
 
 --- Enables and registers a subsystem plugin into the engine.
@@ -40,7 +46,6 @@ function CoreEngine:createWindow(title, width, height)
 end
 
 --- Returns the internal native window instance.
----@private
 ---@return NativeWindow? window The internal native window instance, if created.
 function CoreEngine:getWindow()
     return self.window
@@ -55,7 +60,20 @@ function CoreEngine:createCanvas(width, height)
     return canvas
 end
 
---- Starts the deferred window display, enters the main loop, processes SDL events, and manages shutdown.
+--- Builds and returns the public API facade table exposed to application space.
+---@private
+---@return table publicAPI Table containing all public engine methods.
+function CoreEngine:getPublicAPI()
+    return {
+        enablePlugin = function(p) self:enablePlugin(p) end,
+        createWindow = function(t, w, h) return self:createWindow(t, w, h) end,
+        createCanvas = function(w, h) return self:createCanvas(w, h) end,
+        getFPS = function() return self.fpsCounter:getFPS() end,
+        run = function() self:mainloop() end,
+    }
+end
+
+--- Starts deferred window display, enters the main loop, polls SDL events, and handles shutdown.
 function CoreEngine:mainloop()
     -- Deferred Show: Perform initial off-screen render before revealing the window
     self.pluginManager:notify("onRender")
@@ -72,6 +90,12 @@ function CoreEngine:mainloop()
             end
         end
 
+        local currentTick = SDL.getTicks()
+        local dt = (currentTick - self.lastTick) / 1000
+        self.lastTick = currentTick
+        self.fpsCounter:update(dt)
+        self.pluginManager:notify("onUpdate", dt)
+
         -- Render frame pipeline
         self.pluginManager:notify("onRender")
     end
@@ -82,15 +106,4 @@ end
 -- Initialize core engine instance
 CoreEngine:internalInit()
 
---- Public API interface exposed when requiring the GQEngine module.
----@class GQEngineModule
----@field enablePlugin fun(plugin: Plugin) Enables and attaches a plugin to the engine.
----@field createWindow fun(title?: string, width?: integer, height?: integer): PublicWindow Creates and registers the application window.
----@field createCanvas fun(width: integer, height: integer): Canvas Factory method to instantiate a new Canvas.
----@field run fun() Starts the engine main execution loop.
-return {
-    enablePlugin = function(p) CoreEngine:enablePlugin(p) end,
-    createWindow = function(t, w, h) return CoreEngine:createWindow(t, w, h) end,
-    createCanvas = function(w, h) return CoreEngine:createCanvas(w, h) end,
-    run = function() CoreEngine:mainloop() end
-}
+return CoreEngine.publicAPI
