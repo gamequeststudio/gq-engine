@@ -17,7 +17,7 @@ A GQEngine foi criada com alguns objetivos principais:
 - Pouca configuração para iniciar um projeto;
 - Incentivar boas práticas de organização sem esconder o funcionamento da engine.
 
-## 🚀 Exemplo Básico
+## Exemplo Básico
 
 Abaixo está um exemplo mínimo de inicialização da engine com uma janela e desenho no canvas:
 
