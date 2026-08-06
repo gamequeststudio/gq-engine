@@ -1,4 +1,4 @@
-🇧🇷 Português | [🇺🇸 English](README.en.md)
+🇧🇷 Português | [🇺🇸 English](README.md)
 
 <p align="center">
   <img src="assets/logo.png" alt="GQEngine Logo"/>
