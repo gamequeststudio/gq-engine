@@ -1,8 +1,11 @@
 ![Lua](https://img.shields.io/badge/Lua-5.1+-blue) ![LuaJIT](https://img.shields.io/badge/LuaJIT-2.1-brightgreen) ![SDL3](https://img.shields.io/badge/SDL3-Latest-orange) ![License](https://img.shields.io/badge/license-MIT-green)
 
 <img src="assets/banner.png" width="890" alt="GQEngine - Minimalist Game Engine">
-<h2 align="center">Overview</h2>
+
+## Overview
+
 GQEngine is an ultra-minimalist game engine built with:
+
 - <b>Lua/LuaJIT</b> for scripting and game logic
 - Direct <b>FFI bindings</b> to SDL3
 - A <b>plugin system</b> for extensibility
@@ -10,7 +13,7 @@ GQEngine is an ultra-minimalist game engine built with:
 
 Ideal for rapid prototyping, simple 2D games, and experimenting with engine design.
 
-<h2 align="center">Features</h2>
+## Features
 
 | Feature         | Status  | Description                                       |
 | --------------- | ------- | ------------------------------------------------- |
