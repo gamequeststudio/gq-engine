@@ -3,10 +3,10 @@
 <img src="assets/banner.png" width="890" alt="GQEngine - Minimalist Game Engine">
 <h2 align="center">Overview</h2>
 GQEngine is an ultra-minimalist game engine built with:
-- **Lua/LuaJIT** for scripting and game logic
-- Direct **FFI bindings** to SDL3
-- A **plugin system** for extensibility
-- **Event-driven architecture** for decoupling
+- <b>Lua/LuaJIT</b> for scripting and game logic
+- Direct <b>FFI bindings</b> to SDL3
+- A <b>plugin system</b> for extensibility
+- <b>Event-driven architecture</b> for decoupling
 
 Ideal for rapid prototyping, simple 2D games, and experimenting with engine design.
 
